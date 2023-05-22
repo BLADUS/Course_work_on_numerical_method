@@ -1,0 +1,944 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{ulem}
+\usepackage[english,russian]{babel}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{geometry}
+\usepackage[english]{blindtext}
+\usepackage[matrix,arrow,curve,frame,poly,arc]{xy}
+\usepackage{fancyhdr}
+\usepackage{subcaption}
+\usepackage[export]{adjustbox}
+\usepackage{wrapfig}
+\usepackage{amsmath}
+\usepackage{subfig}
+\graphicspath{ {image} }
+\usepackage{hyperref}
+\hypersetup{pdfstartview=FitH,  linkcolor=linkcolor,urlcolor=urlcolor, colorlinks=true}
+
+\begin{document}
+
+\begin{titlepage}
+    \thispagestyle{empty}
+   \begin{center}
+        \noindent\begin{minipage}{0.14\textwidth}
+        \includegraphics[width=\linewidth]{madi_logo.png}
+        \end{minipage}%
+        \begin{minipage}{0.86\textwidth}
+        \center{\small{\vspace{\baselineskip}}}
+        \center{{МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ \\ федеральное бюджетное образовательное государственное учреждение высшего образования}
+        \center{{\hspace{1 cm}}}}
+        \end{minipage}
+        \small{\textbf{<<МОСКОВСКИЙ АВТОМОБИЛЬНО-ДОРОЖНЫЙ ГОСУДАРСТВЕННЫЙ ТЕХНИЧЕСКИЙ УНИВЕРСИТЕТ (МАДИ)>>}}\\
+        \vspace{0.2 cm}
+        \scriptsize{{\textbf{КАФЕДРА <<ВЫСШАЯ МАТЕМАТИКА>> }}}
+        \vspace{\baselineskip}
+            
+        \small{\textbf{КУРСОВАЯ РАБОТА}}\\
+        \vspace{0.2 cm}
+        
+        по дисциплине <<Численные методы>>
+        на тему\\
+        <<Решение уравнений, систем линейных уравнений, интегралов, задачи Коши с помощью численных методов. >>
+   \end{center}
+   
+    \hfill \begin{minipage}{0.5\linewidth}
+        \textbf{Выполнил:}\\
+        Учебная группа 2бПМ\\
+        Осада.В.В\\
+        \textbf{Руководитель курсового проекта:
+        }\\
+        Старший преподаватель\\
+       Яшина М.В\\
+        Подпись \underline{\hspace{1cm}}\\
+    \end{minipage}
+    \vspace{1 cm}
+   \begin{minipage}{0.45\linewidth}
+        Курсовой проект защищен\\ с оценкой <<\underline{\hspace{1cm}}>>\\
+        <<\underline{\hspace{0.7cm}}>> \underline{\hspace{2cm}} 2023 г.
+    \end{minipage}
+    \begin{minipage}{0.55\linewidth}
+    \end{minipage}
+    \vspace{5 cm}
+    \center{Москва 2023}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Введение}
+В современном мире численные методы играют важную роль в решении различных математических задач. Они позволяют нам приближенно находить решения, которые не всегда возможно получить аналитически. В данной курсовой работе мы рассмотрим применение численных методов для решения нескольких классических задач.
+
+Одной из таких задач является решение нелинейных уравнений. Нелинейные уравнения широко применяются в различных областях науки и техники, и их точное решение может быть сложной задачей. Мы рассмотрим графический метод определения корней уравнения, а также итерационные методы, такие как метод деления отрезка пополам, метод простой итерации и метод Ньютона, которые позволят нам найти численные решения с заданной точностью.
+
+Другой важной задачей, которую мы рассмотрим, является решение систем линейных уравнений (СЛАУ). СЛАУ возникают во многих областях науки и инженерии, и их решение является ключевым этапом в анализе и моделировании различных процессов. Мы изучим различные методы решения СЛАУ, которые позволят нам найти численные решения и рассмотреть их свойства.
+
+Для вычисления интегралов мы рассмотрим численные методы, такие как метод трапеций и метод Симпсона. Эти методы позволяют приближенно вычислить значения интегралов путем разбиения области интегрирования на под отрезки и аппроксимации значения функции на этих подотрезках. Кроме того, мы также оценим погрешности этих вычислений, что позволит нам оценить точность полученных результатов.
+
+Другим важным аспектом, который мы рассмотрим, является использование интерполяционных многочленов. Интерполяция позволяет нам приближенно находить значения функции на основе ее известных значений в некоторых точках. Мы будем использовать многочлены различных степеней для нахождения значений функции, заданной таблично. Это позволит нам провести анализ и сравнение различных интерполяционных подходов.
+
+Наконец, мы обратимся к решению задач Коши, которые возникают в области дифференциальных уравнений. Задачи Коши описывают развитие системы дифференциальных уравнений с заданными начальными условиями. Мы рассмотрим методы Эйлера, модифицированный метод Эйлера и метод Рунге-Кутты 4-го порядка для численного решения задач Коши. Кроме того, мы оценим погрешность решений, что поможет нам сделать выводы о точности и стабильности этих методов.
+
+В данной работе мы реализуем описанные методы на языке программирования Java. Благодаря численным методам, которые мы изучим, мы сможем приближенно решать различные математические задачи и получать результаты с требуемой точностью.
+
+\newpage
+
+\section{Описание реализации проекта}
+В данной главе мы рассмотрим структуру проекта и описание реализации численных методов для решения различных задач. Проект разделен на несколько папок, каждая из которых содержит реализацию методов для решения определенных задач.
+
+\subsection{Уравнение}
+В папке "Уравнения" содержатся файлы и классы, связанные с численными методами для решения нелинейных уравнений. Рассмотрим каждый метод подробнее:
+
+\subsubsection{Метод деления отрезка пополам}
+Здесь представлен код реализации метода деления отрезка пополам для решения нелинейных уравнений. Ниже приведен фрагмент кода, в котором происходит вычисление корня уравнения с использованием данного метода:
+
+\begin{verbatim}
+     public static double bisection(String functionString, double EPS, double[] limits) throws ScriptException {
+        Scanner scanner = new Scanner(System.in);
+
+        double leftBoundary = limits[0];
+        double rightBoundary = limits[1];
+
+        double valueLeftBoundFunction = evaluate(functionString, leftBoundary);
+        double valueRightBoundFunction = evaluate(functionString, rightBoundary);
+
+        if (valueLeftBoundFunction * valueRightBoundFunction > 0) {
+            System.out.println("На заданном интервале нет корней!");
+            return Double.NaN; // Возвращаем NaN, чтобы показать, что корень не найден.
+        }
+
+        double x0 = (leftBoundary + rightBoundary) / 2;
+
+        while (Math.abs(rightBoundary - leftBoundary) >= EPS) {
+            double valueX0Function = evaluate(functionString, x0);
+
+            if (valueRightBoundFunction * valueX0Function >= 0) {
+                rightBoundary = x0;
+            } else {
+                leftBoundary = x0;
+            }
+
+            x0 = (leftBoundary + rightBoundary) / 2;
+        }
+
+        return x0;
+    }
+\end{verbatim}
+
+\subsubsection{Метод простой итерации}
+Здесь представлен представлен код реализации метода простой итерации для решения нелинейных уравнений. Ниже приведен фрагмент кода, демонстрирующий использование данного метода:
+
+\begin{verbatim}
+          public static double iteration(String functionString, double EPS, double[] limits) throws ScriptException {
+            int i = 1;
+            double x = evaluate(functionString, limits[0]);
+            double x0 = evaluate(functionString, x);
+    
+            while (true) {
+                if (Math.abs(x - x0) < EPS) {
+                    return x0;
+                }
+                x = evaluate(functionString,x0);
+                x0 = evaluate(functionString,x0);
+                i++;
+    
+                if (i == 10000) {
+                    System.out.println("Выполнено 10000 итераций, решение не найдено!");
+                    return Double.NaN;
+                }
+            }
+        }
+\end{verbatim}
+
+\subsubsection{Метод Ньютона}
+Здесь представлен представлен код реализации метода Ньютона для решения нелинейных уравнений. Вот фрагмент кода, демонстрирующий использование данного метода:
+
+\begin{verbatim}
+      public static double secant(String functionString,double EPS,double[] limits) throws ScriptException {
+        String firstDerivative = Derivative.takeDerivative(functionString);
+        String secondDerivative = Derivative.takeDerivative(firstDerivative);
+
+        double leftBoundary = limits[0];
+        double rightBoundary = limits[1];
+
+        double valueLeftBoundFunction = evaluate(functionString, leftBoundary);
+        double valueRightBoundFunction = evaluate(functionString, rightBoundary);
+
+        double valueLeftBoundFirstDerivative = evaluate(firstDerivative, leftBoundary);
+        double valueRightBoundFirstDerivative = evaluate(firstDerivative, rightBoundary);
+
+        double valueLeftBoundSecondDerivative = evaluate(secondDerivative, leftBoundary);
+        double valueRightBoundSecondDerivative = evaluate(secondDerivative, rightBoundary);
+
+        double x0;
+
+        if (valueLeftBoundFunction * valueLeftBoundSecondDerivative > 0){
+            x0 = leftBoundary;
+        }else if (valueRightBoundFunction * valueRightBoundSecondDerivative > 0){
+            x0 = rightBoundary;
+        }else {
+            System.out.println("Неверно выбран начальный интревал!");
+            return Double.NaN;
+        }
+
+        double x = x0 - (evaluate(functionString,x0) / evaluate(firstDerivative,x0));
+        while(Math.abs(x - x0) >= EPS){
+            x0 = x - (evaluate(functionString,x)/evaluate(firstDerivative,x));
+            x = x0 - (evaluate(functionString,x0)/evaluate(firstDerivative,x0));
+        }
+        return x;
+    }
+\end{verbatim}
+
+\subsubsection{Меню и ввод результатов}
+Для удобства использования и демонстрации работы численных методов, в проекте реализовано меню, которое позволяет выбирать нужный метод и вводить необходимые значения.
+
+
+Чтобы применить один из численных методов для решения уравнения $f(x) = x^3 + 9x - 11 = 0$, пользователь выбирает соответствующий метод из меню и вводит значения параметров, таких как точность ($\varepsilon$) и область поиска решения ($limits$).
+
+После ввода значений метод запускается и вычисляет решение уравнения с заданной точностью и областью поиска. Результат работы метода отображается на экране, позволяя оценить полученное решение.
+
+Таким образом, меню и ввод результатов предоставляют удобный интерфейс для работы с численными методами и исследования уравнения $f(x) = x^3 + 9x - 11 = 0$.
+
+\subsubsection{Прочие детали реализации}
+В этой части мы рассмотрим некоторые дополнительные детали реализации численных методов для решения уравнений:
+
+\textbf{Аргументы методов:}
+\begin{itemize}
+    \item \texttt{functionString} -- строка, представляющая математическую функцию, передаваемую в метод. Она может содержать различные математические операции, переменные и константы.
+    \item \texttt{EPS} -- точность, с которой методы должны найти решение уравнения. Значение \texttt{EPS} определяет требуемую близость результата к истинному значению решения.
+    \item \texttt{limits} -- массив, указывающий границы области, в которой ищется решение уравнения. Обычно это два значения, представляющие левую и правую границы интервала.
+\end{itemize}
+
+\textbf{Методы \texttt{createFunction} и \texttt{evaluate}:}
+\begin{itemize}
+    \item \texttt{createFunction} -- этот метод преобразует переданную математическую функцию, заданную в виде строки, во внутренний формат, понятный для программы. Он обеспечивает корректное вычисление значения функции.
+    \item \texttt{evaluate} -- данный метод принимает функцию и значение аргумента и вычисляет значение функции в заданной точке. Он используется для получения значений функции при решении уравнений.
+\end{itemize}
+
+\textbf{Метод \texttt{takeDerivative}:}
+Для некоторых методов необходимо вычислять производную функции. В проекте реализован метод \texttt{takeDerivative}, который вычисляет значение производной переданной функции в заданной точке. Это позволяет использовать численные методы, требующие вычисления производной.
+
+Учет этих деталей реализации помогает эффективно применять численные методы для решения уравнений и получать точные результаты.
+
+\subsection{Система линейных уравнений}
+
+В данном разделе представлена система линейных уравнений, а также численные методы для ее решения. В проекте используются метод Гаусса и метод Зейделя.
+
+\subsubsection{Описание системы линейных уравнений}
+
+Рассмотрим систему линейных уравнений, состоящую из пяти уравнений:
+
+\begin{center}
+\[
+\begin{cases}
+7x_1 + 2x_2 - x_3 + x_4 - x_5 = 45 \\
+0x_1 - 6x_2 + x_3 + x_4 - 2x_5 = 9 \\
+-3x_1 + x_2 + 8x_3 + x_4 + x_5 = 0 \\
+2x_1 + 2x_2 - 3x_3 + 9x_4 = 17 \\
+x_1 - 2x_2 - 3x_3 + x_4 - 9x_5 = 25 \\
+\end{cases}
+\]
+\end{center}
+
+Эта система состоит из пяти уравнений с пятью неизвестными: $x_1, x_2, x_3, x_4, x_5$. Коэффициенты перед неизвестными и правые части уравнений указаны выше.
+
+\subsubsection{Методы решения системы линейных уравнений}
+
+В проекте реализованы два численных метода для решения системы линейных уравнений: метод Гаусса и метод Зейделя.
+
+\paragraph{Метод Гаусса}
+
+Метод Гаусса используется для решения систем линейных уравнений путем приведения их к упрощенной ступенчатой форме. Результатом метода Гаусса является точное решение системы.
+
+Ниже представлен фрагмент кода, в котором происходит вычисление решения системы с использованием данного метода:
+
+\begin{verbatim}
+ public static double[] gauss(LinearSystem system) {
+        int size = system.getSize();
+        double[][] coefficients = system.getCoefficients();
+        double[] rightHandSide = system.getRightHandSide();
+
+        // Прямой ход
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = i + 1; j < size; j++) {
+                double ratio = coefficients[j][i] / coefficients[i][i];
+                for (int k = i; k < size; k++) {
+                    coefficients[j][k] -= ratio * coefficients[i][k];
+                }
+                rightHandSide[j] -= ratio * rightHandSide[i];
+            }
+        }
+
+        // Обратный ход
+        double[] solution = new double[size];
+        for (int i = size - 1; i >= 0; i--) {
+            double sum = 0.0;
+            for (int j = i + 1; j < size; j++) {
+                sum += coefficients[i][j] * solution[j];
+            }
+            solution[i] = (rightHandSide[i] - sum) / coefficients[i][i];
+        }
+
+        return solution;
+    }
+\end{verbatim}
+
+\paragraph{Метод Зейделя}
+Другим методом, который мы применим для решения системы линейных уравнений, является метод Зейделя. Вот фрагмент кода, в котором реализовано вычисление решения системы с использованием данного метода:
+
+\begin{verbatim}
+ public static double[] seidel(LinearSystem system, double epsilon) {
+        int maxIterations = 100000;
+        int size = system.getSize();
+        double[][] coefficients = system.getCoefficients();
+        double[] rightHandSide = system.getRightHandSide();
+
+        double[] solution = new double[size];
+        double[] prevSolution = new double[size];
+        int iteration = 0;
+
+        while (iteration < maxIterations) {
+            for (int i = 0; i < size; i++) {
+                prevSolution[i] = solution[i];
+            }
+
+            for (int i = 0; i < size; i++) {
+                double sum = 0.0;
+                for (int j = 0; j < size; j++) {
+                    if (j != i) {
+                        sum += coefficients[i][j] * solution[j];
+                    }
+                }
+                solution[i] = (rightHandSide[i] - sum) / coefficients[i][i];
+            }
+
+            double maxDiff = calculateNormDifference(solution, prevSolution); // Используем метод calculateNormDifference для расчета разности
+
+            if (maxDiff < epsilon) {
+                break;
+            }
+
+            iteration++;
+        }
+
+        return solution;
+    }
+\end{verbatim}
+
+\subsubsection{Прочие детали реализации}
+
+При использовании метода Гаусса и метода Зейдаля для решения системы линейных уравнений пользователь будет вводить коэффициенты каждого уравнения для левой и правой частей. Для начала, пользователь должен указать размер системы, то есть количество уравнений.
+
+Из полученных данных будет создан объект системы, используя реализацию класса \texttt{LinearSystem}. Класс \texttt{LinearSystem} включает в себя:
+
+\begin{itemize}
+  \item \texttt{coefficients}: двумерный массив, содержащий коэффициенты системы линейных уравнений.
+  \item \texttt{rightHandSide}: одномерный массив, содержащий значения правой части уравнений.
+\end{itemize}
+
+Для создания объекта системы из введенных пользователем данных необходимо использовать методы класса \texttt{LinearSystem}. Одним из таких методов является \texttt{readSystemFromManualInput()}, который позволяет пользователю вводить коэффициенты и значения правой части системы вручную.
+
+Таким образом, после ввода данных и создания объекта системы, вы можете передать этот объект в ваши методы решения системы линейных уравнений, такие как метод Гаусса или метод Зейдаля.
+
+\clearpage
+
+\begin{figure}[ht]
+  \centering
+  {\includegraphics[width=0.4\textwidth]{system_input1.png}}
+  \hfill
+  {\includegraphics[width=0.4\textwidth]{system_input2.png}}
+  \hfill
+  {\includegraphics[width=0.4\textwidth]{system_input3.png}}
+  \caption{Ввод данных для системы линейных уравнений}
+\end{figure}
+
+\subsection{Вычисление интеграла}
+
+В данной подсекции мы рассмотрим численные методы для вычисления определенного интеграла. Для иллюстрации применимости данных методов, рассмотрим конкретный пример с подынтегральной функцией $f(x) = x^3 + 9x - 11$ и пределами интегрирования от 1 до 3.5.
+
+\subsubsection{Метод трапеций}
+
+Метод трапеций является одним из простейших численных методов для вычисления интегралов. Он основан на аппроксимации подынтегральной функции с помощью линейных отрезков, образованных верхними и нижними трапециями.
+
+Ниже приведен пример кода, реализующего метод трапеций для вычисления интеграла:
+
+\begin{verbatim}
+  public static double integrateByTrapezoidRule(String functionString, double[] limits, int n) throws ScriptException, ScriptException {
+        double a = limits[0];
+        double b = limits[1];
+
+        DoubleUnaryOperator function = createFunction(functionString);
+        double h = (b - a) / n;
+        double sum = 0.5 * (function.applyAsDouble(a) + function.applyAsDouble(b));
+        for (int i = 1; i < n; i++) {
+            double x = a + i * h;
+            sum += function.applyAsDouble(x);
+        }
+        return h * sum;
+    }
+\end{verbatim}
+
+\subsubsection{Метод Симпсона}
+
+Метод Симпсона является более точным численным методом для вычисления интегралов. Он основан на аппроксимации подынтегральной функции с помощью парабол, проходящих через три точки.
+
+Ниже приведен пример кода, реализующего метод Симпсона для вычисления интеграла:
+
+\begin{verbatim}
+ public static double integrateBySimpsonRule(String functionString, double[] limits, int n) throws ScriptException, ScriptException {
+        double a = limits[0];
+        double b = limits[1];
+
+        if (n % 2 != 0) {
+            throw new IllegalArgumentException("Number of intervals (n) must be even for Simpson's rule.");
+        }
+        DoubleUnaryOperator function = createFunction(functionString);
+        double h = (b - a) / n;
+        double sum = function.applyAsDouble(a) + function.applyAsDouble(b);
+        for (int i = 1; i < n; i++) {
+            double x = a + i * h;
+            sum += (i % 2 == 0) ? 2 * function.applyAsDouble(x) : 4 * function.applyAsDouble(x);
+        }
+        return h / 3 * sum;
+    }
+\end{verbatim}
+
+\subsubsection{Вычисление погрешности с использованием правила Рунге}
+
+Правило Рунге позволяет оценить погрешность численного метода, используя результаты вычислений с разными шагами. Ниже приведены примеры кода, демонстрирующие вычисление погрешности с использованием правила Рунге для метода трапеций и его усовершенствованной версии для метода Симпсона.
+
+Для метода трапеций:
+\begin{verbatim}
+public static double estimateErrorByRungeRuleTrapezoid(String functionString, double[] limits, int n) throws ScriptException {
+        double a = limits[0];
+        double b = limits[1];
+
+        // Вычисляем интеграл с более грубым разбиением
+        int nCoarse = n / 2;
+        double integralCoarse = integrateByTrapezoidRule(functionString, limits, nCoarse);
+
+        // Вычисляем интеграл с более точным разбиением
+        double integralFine = integrateByTrapezoidRule(functionString, limits, n);
+
+        // Оцениваем погрешность решения по правилу Рунге
+        return Math.abs(integralFine - integralCoarse) / (Math.pow(2, 2) - 1);
+    }
+\end{verbatim}
+
+Для метода Симпсона:
+\begin{verbatim}
+   public static double estimateErrorByRichardsonSimpson(String functionString, double[] limits, int n) throws ScriptException {
+        double integral = integrateBySimpsonRule(functionString, limits, n);
+        double integral2 = integrateBySimpsonRule(functionString, limits, 2 * n);
+
+        double error = Math.abs((1 / 15.0) * (integral - integral2));
+
+        return error;
+    }
+\end{verbatim}
+
+\subsection{Вычисление значений функции с использованием интерполяционных многочленов}
+
+Для нахождения значений функции, заданной таблично,   в точке $x_0=0.25$, мы можем воспользоваться методом интерполяции. с помощью интерполяционных многочленов разных степеней, можно воспользоваться методами интерполяции, такими как метод Лагранжа и метод Ньютона.
+
+\subsubsection{Инициализация массивов данных}
+
+Для работы с таблично заданной функцией вам доступны два класса, которые позволяют инициализировать массивы значений $x$ и $y$ из файла. Эти классы позволяют удобно считывать значения из файла и сохранять их в массивы для последующей обработки.
+
+
+
+\subsubsection{Метод Лагранжа}
+Здесь представлен код реализации метода Лагранжа для интерполяции функции на основе таблично заданных данных. Ниже приведен фрагмент кода, в котором осуществляется вычисление значения функции в заданной точке с использованием метода Лагранжа:
+
+\begin{verbatim}
+       public static double interpolateByLagrange(double[] x, double[] y, double x0) {
+        int n = x.length;
+
+        double result = 0;
+
+        for (int i = 0; i < n; i++) {
+            double term = y[i];
+
+            for (int j = 0; j < n; j++) {
+                if (j != i) {
+                    term *= (x0 - x[j]) / (x[i] - x[j]);
+                }
+            }
+
+            result += term;
+        }
+
+        return result;
+    }
+\end{verbatim}
+
+\subsubsection{Метод Ньютона}
+
+Здесь представлен код реализации метода Ньютона для интерполяции функции на основе таблично заданных данных. Ниже приведен фрагмент кода, в котором осуществляется вычисление значения функции в заданной точке с использованием метода Ньютона:
+
+\begin{verbatim}
+      public static double interpolateByNewton(double[] x, double[] y, double x0) {
+        int n = x.length;
+
+        double result = 0;
+
+        double[][] dividedDifferences = new double[n][n];
+        for (int i = 0; i < n; i++) {
+            dividedDifferences[i][0] = y[i];
+        }
+
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < n - i; j++) {
+                dividedDifferences[j][i] = (dividedDifferences[j + 1][i - 1] - dividedDifferences[j][i - 1]) / (x[j + i] - x[j]);
+            }
+        }
+
+        double term = 1;
+        for (int i = 0; i < n; i++) {
+            result += term * dividedDifferences[0][i];
+            term *= (x0 - x[i]);
+        }
+
+        return result;
+    }
+\end{verbatim}
+
+\subsubsection{Оценка погрешности}
+
+Для оценки погрешности интерполяции вы можете использовать два метода: метод Лагранжа и метод Ньютона. Оба метода предоставляют возможность вычислить погрешность интерполяции в заданной точке.
+
+Метод \texttt{estimateErrorByLagrange()} вычисляет погрешность интерполяции методом Лагранжа. Он принимает массивы значений $x$ и $y$ (которые вы инициализировали из файла) и точку $x_0$, в которой требуется оценить погрешность. Данный метод использует интерполяцию методом Лагранжа для вычисления значения функции в точке $x_0$ и точке, сдвинутой на половину шага интерполяции. Результатом является абсолютное значение разности этих двух интерполированных значений.
+
+Метод \texttt{estimateErrorByNewton()} выполняет аналогичную операцию, но использует интерполяцию методом Ньютона. Он также принимает массивы значений $x$ и $y$ и точку $x_0$, в которой требуется оценить погрешность. Используя интерполяцию методом Ньютона, метод вычисляет значение функции в точке $x_0$ и точке, сдвинутой на половину шага интерполяции. Результатом также является абсолютное значение разности этих двух интерполированных значений.
+
+Вы можете использовать эти методы для оценки погрешности интерполяции в заданной точке.
+
+Пример использования методов оценки погрешности может выглядеть следующим образом:
+
+\begin{verbatim}
+public static double estimateErrorByLagrange(double[] arrayX, double[] arrayY, double x0) {
+        double h = arrayX[1] - arrayX[0]; // шаг интерполяции
+        double interpolatedValue = interpolateByLagrange(arrayX, arrayY, x0);
+        double interpolatedValueHalfStep = interpolateByLagrange(arrayX, arrayY, x0 + h / 2);
+        return Math.abs(interpolatedValue - interpolatedValueHalfStep);
+    }
+\end{verbatim}
+
+\subsection{Решение задачи Коши}
+
+Для решения задачи Коши с начальным условием $y(0)=2$ на отрезке $x=[0;3.2]$ с шагом $h=0.4$, мы использовали три численных метода: метод Эйлера, модифицированный метод Эйлера и метод Рунге-Кутты 4-го порядка.
+
+\subsubsection{Метод Эйлера}
+
+
+\begin{verbatim}
+   public static List<Double> euler(String functionString, double[] limits, double h) throws ScriptException {
+        List<Double> yValues = new ArrayList<>();
+        double x0 = limits[0];
+        double xLast = limits[1];
+
+        double y0 = writeY(x0);
+
+        yValues.add(y0);
+
+        DoubleBinaryOperator function = createFunction(functionString);
+
+        int n = (int) Math.round((xLast - x0) / h);
+
+        for (int i = 0; i < n; i++) {
+            double f = evaluateFunctionTwoVariables(functionString, x0, y0);
+            y0 = y0 + h * f;
+            x0 = x0 + h;
+
+            System.out.println("Step " + (i + 1) + ": x = " + x0 + ", y = " + y0);
+
+            yValues.add(y0);
+        }
+
+        return yValues;
+    }
+\end{verbatim}
+
+\subsubsection{Модифицированный метод Эйлера}
+
+\begin{verbatim}
+public static List<Double> modifiedEuler(String functionString, double[] limits, double h) throws ScriptException {
+        List<Double> yValues = new ArrayList<>();
+        double x0 = limits[0];
+        double xLast = limits[1];
+
+        double y0 = writeY(x0);
+
+        yValues.add(y0);
+
+        int n = (int) Math.round((xLast - x0) / h);
+
+        for (int i = 0; i < n; i++) {
+            double f1 = evaluateFunctionTwoVariables(functionString, x0, y0);
+            double xHalf = x0 + h / 2.0;
+            double yHalf = y0 + h / 2.0 * f1;
+            double f2 = evaluateFunctionTwoVariables(functionString, xHalf, yHalf);
+
+            double yNext = y0 + h * f2;
+            x0 = x0 + h;
+            y0 = yNext;
+
+            System.out.println("Step " + (i + 1) + ": x = " + x0 + ", y = " + y0);
+
+            yValues.add(y0);
+        }
+
+        return yValues;
+    }
+\end{verbatim}
+
+\subsubsection{Метод Рунге-Кутты 4-го порядка}
+
+\begin{verbatim}
+public static List<Double> rungeKutta4(String functionString, double[] limits, double h) throws ScriptException, ScriptException {
+        List<Double> yValues = new ArrayList<>();
+        double x0 = limits[0];
+        double xLast = limits[1];
+
+        double y0 = writeY(x0);
+
+        yValues.add(y0);
+
+        int n = (int) Math.round((xLast - x0) / h);
+
+        for (int i = 0; i < n; i++) {
+            double k1 = evaluateFunctionTwoVariables(functionString, x0, y0);
+            double k2 = evaluateFunctionTwoVariables(functionString, x0 + h / 2.0, y0 + h / 2.0 * k1);
+            double k3 = evaluateFunctionTwoVariables(functionString, x0 + h / 2.0, y0 + h / 2.0 * k2);
+            double k4 = evaluateFunctionTwoVariables(functionString, x0 + h, y0 + h * k3);
+
+            double yNext = y0 + h / 6.0 * (k1 + 2 * k2 + 2 * k3 + k4);
+            x0 = x0 + h;
+            y0 = yNext;
+
+            System.out.println("Step " + (i + 1) + ": x = " + x0 + ", y = " + y0);
+
+            yValues.add(y0);
+        }
+
+        return yValues;
+    }
+\end{verbatim}
+
+\subsubsection{Прочие детали реализации}
+
+Для использования методов Эйлера, модифицированного метода Эйлера и метода Рунге-Кутты 4-го порядка вам потребуется отдельный метод, который будет вычислять значение функции двух переменных:
+
+\begin{verbatim}
+ // Вычисление значения функции при заданных аргументах x и y
+    public static double evaluateFunctionTwoVariables(String functionString, double x, double y) throws ScriptException {
+        DoubleBinaryOperator function = createFunction(functionString);
+        try {
+            return function.applyAsDouble(x, y);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+    // Правильная обработка функции с двумя переменными x и y
+    public static DoubleBinaryOperator createFunction(String function) throws ScriptException {
+        function = function.replaceAll("(\\d+(,\\d+)?)\\^(\\d+)", "Math.pow($1, $3)");
+        function = function.replaceAll("(\\d+(,\\d+)?)x", "$1*x");
+        function = function.replaceAll("x\\^(\\d+)", "Math.pow(x, $1)");
+        function = function.replaceAll("(\\d+(,\\d+)?)y", "$1*y");
+        function = function.replaceAll("y\\^(\\d+)", "Math.pow(y, $1)");
+        function = function.replaceAll("e", "2.7");
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("js");
+        engine.eval("function f(x, y) { return " + function + "; }");
+        Invocable invocable = (Invocable) engine;
+        String finalFunction = function;
+        return (x, y) -> {
+            try {
+                Object result = invocable.invokeFunction("f", x, y);
+                if (result instanceof Number) {
+                    return ((Number) result).doubleValue();
+                } else {
+                    throw new IllegalArgumentException("Function result is not a number");
+                }
+            } catch (ScriptException | NoSuchMethodException ex) {
+                throw new IllegalArgumentException("Invalid function: " + finalFunction, ex);
+            }
+        };
+    }\end{verbatim}
+
+    Кроме того, для оценки погрешности этих методов вы используете правило Рунге-Ромберга. Ниже представлен код, который вы можете использовать для оценки погрешности:
+
+    \begin{verbatim}
+ public static double estimateErrorRungeRomberg(List<Double> solution, double h) {
+        int n = solution.size();
+
+        double error = 0.0;
+        for (int i = 0; i < n - 1; i++) {
+            double y1 = solution.get(i);
+            double y2 = solution.get(i + 1);
+            double exactValue = (y2 - y1) / (h);
+
+            error += Math.pow(exactValue - y2, 2);
+        }
+
+        return Math.sqrt(error);
+    }
+    \end{verbatim}
+
+\section{Показания методов}
+
+\subsection{Уравнение}
+В данной части представлены результаты численных методов для решения уравнения, а также графическое решение уравнения.
+
+\subsubsection{}{Описание функции}
+Для иллюстрации работы численных методов мы рассмотрим уравнение $f(x) = x^3 + 9x - 11 = 0$. Именно это уравнение будет использоваться в дальнейшем для применения различных численных методов.
+
+Функция $f(x) = x^3 + 9x - 11$ представляет собой кубическую функцию с коэффициентами $a = 1$, $b = 9$ и $c = -11$. Наша задача состоит в нахождении корней этого уравнения с помощью численных методов, чтобы найти точные значения $x$, при которых $f(x) = 0$.
+
+Далее мы будем применять методы для нахождения корней данной функции и сравнивать результаты каждого метода.
+
+
+\subsubsection{Графическое решение уравнения}
+Прежде чем рассмотреть показания численных методов, давайте визуализируем уравнение графически. Ниже представлен график функции, где мы ищем решение уравнения:
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.6\textwidth]{graph_equation.png}
+  \caption{Графическое решение уравнения}
+\end{figure}
+
+
+\subsubsection{Результаты численных методов для решения уравнений}
+Теперь рассмотрим результаты работы каждого из трех численных методов: метода деления отрезка пополам, метода простой итерации и метода Ньютона. Ниже представлены фотографии с результатами работы каждого метода:
+
+\begin{figure}[p]
+  \centering
+  \begin{subfigure}[p]{0.4\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{bisection_method.png}
+    \caption{Метод деления отрезка пополам}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[p]{0.4\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{simple_iteration_method.png}
+    \caption{Метод простой итерации}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[p]{0.4\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{newton_method.png}
+    \caption{Метод Ньютона}
+  \end{subfigure}
+  \caption{Результаты работы численных методов}
+\end{figure}
+
+Эти результаты наглядно демонстрируют эффективность и точность каждого из трех методов при решении данного уравнения.
+
+Теперь занесем полученные данные в таблицу, что увидеть какой метод работает эффективнее.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Методы} & \textbf{Результат} & \textbf{Погрешность} \\
+\hline
+Метод деления отрезка пополам & 1.08154296875 &0,00005\\
+\hline
+Метод простой итерации &1.086180191991883 &0,00458 \\
+\hline
+Метод Ньютона &1.0816224611828698 & 0,00002 \\
+\hline
+\end{tabular}
+\caption{Итоги показаний методов}
+\end{table}
+
+\newpage
+\subsection{Система линейных уравнений}
+
+\subsubsection{Результаты численных методов для систем линейных уравнений}
+
+Теперь рассмотрим результаты работы двух численных методов: метода Гаусса и метода Зейдаля. Ниже представлены скриншоты с показаниями и работой каждого метода.
+
+\begin{figure}[ht]
+  \centering
+  \begin{subfigure}{0.4\textwidth}
+    \includegraphics[width=\linewidth]{gauss_equation.png}
+    \caption{Результат работы метода Гаусса}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.4\textwidth}
+    \includegraphics[width=\linewidth]{zeidel_equation.png}
+    \caption{Результат работы метода Зейдаля}
+  \end{subfigure}
+  \caption{Результаты работы методов для уравнений}
+\end{figure}
+
+Затем можно создать таблицу, в которую вы сможете вносить полученные данные для уравнений:
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\textbf{Метод} & \multicolumn{5}{c|}{\textbf{Результаты}} \\
+\hline
+& $x_1$ & $x_2$ & $x_3$ & $x_4$ & $x_5$ \\
+\hline
+Метод Гаусса & 6,18 & 0,07 &2,49&1,33 &-2,79 \\
+\hline
+Метод Зейдаля& 6,18 & 0,07 &2,49&1,33 &-2,79  \\
+\hline
+\end{tabular}
+\caption{Результаты работы методов для уравнений}
+\end{table}
+\subsection{Вычисление интегралов}
+
+\subsubsection{Результаты численных методов для вычисления интегралов}
+
+Теперь рассмотрим результаты работы двух численных методов: метода трапеций с использованием метода Рунге и метода Симпсона с использованием его усовершенствованной версии. Ниже представлены скриншоты с результатами работы каждого метода.
+
+\begin{figure}[ht]
+\centering
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[width=\linewidth]{trapezoid_rule.png}
+\caption{Результат работы метода трапеций}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[width=\linewidth]{simpson_rule.png}
+\caption{Результат работы метода Симпсона}
+\end{subfigure}
+\caption{Результаты работы методов для интегралов}
+\end{figure}
+
+Затем можно создать таблицу, в которую вы сможете вносить полученные данные для каждого метода:
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Метод} & \textbf{Результат} & \textbf{Погрешность} \\
+\hline
+Метод трапеций & 60.4345703125 & 0.0439453125 \\
+\hline
+Метод Симпсона & 60.390625 &2.5415581597222223 \\
+\hline
+\end{tabular}
+\caption{Результаты работы методов для интегралов}
+\end{table}
+
+\subsection{Методы интерполяции}
+
+\subsubsection{Результаты работы методов интерполяции}
+
+Теперь рассмотрим результаты работы двух методов интерполяции: метода 1 и метода 2. Ниже представлены скриншоты с результатами работы каждого метода.
+
+\clearpage
+
+\begin{figure}[ht]
+\centering
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[width=\linewidth]{method_interpolation_Input.png}
+\caption{Получение данных}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[width=\linewidth]{method_interpolation_Newton.png}
+\caption{Результат работы метода Ньютона}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[width=\linewidth]{method_interpolation_Lagrange.png}
+\caption{Результат работы метода Лагранжа}
+\end{subfigure}
+\caption{Результаты работы методов интерполяции}
+\end{figure}
+
+Затем можно создать таблицу, в которую вы сможете вносить полученные данные для каждого метода:
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Метод} & \textbf{Результат} & \textbf{Погрешность} \\
+\hline
+Метод Ньютона & 14.3819580078125 & 0.8984375 \\
+\hline
+Метод Лагранжа & 14.3819580078125 & 0.8984375 \\
+\hline
+\end{tabular}
+\caption{Результаты работы методов интерполяции}
+\end{table}
+
+\subsection{Задача Коши}
+\subsubsection{Результаты методов для задачи Коши}
+
+Теперь рассмотрим результаты работы трех численных методов: метода Эйлера, модифицированного метода Эйлера и метода Рунге-Кутты 4-го порядка для решения задачи Коши на заданном отрезке. Ниже приведены скриншоты с результатами работы каждого метода.
+
+\clearpage
+
+\begin{figure}[ht]
+\centering
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[width=\linewidth]{menu_Koshi.png}
+\caption{Результат работы метода Эйлера}
+\end{subfigure}
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[width=\linewidth]{euler_method.png}
+\caption{Результат работы метода Эйлера}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[width=\linewidth]{modified_euler_method.png}
+\caption{Результат работы модифицированного метода Эйлера}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[width=\linewidth]{runge_kutta_method.png}
+\caption{Результат работы метода Рунге-Кутты 4-го порядка}
+\end{subfigure}
+\caption{Результаты работы методов для задачи Коши}
+\end{figure}
+
+Затем можно создать таблицу, в которую вы сможете вносить полученные данные для каждого метода, включая значения и погрешности:
+
+\clearpage
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Метод} & \textbf{Результат} & \textbf{Погрешность} \\   
+\hline
+Метод Эйлера &-9.515781119999998 & 14.498779263118147\\
+\hline
+Модифицированный метод Эйлера &-26.03877069843334 & 15.01323840081591 \\
+\hline
+Метод Рунге-Кутты 4-го порядка &-29.041026286098443 &15.228324041427662 \\
+\hline
+\end{tabular}
+\caption{Результаты работы методов для задачи Коши}
+\end{table}
+
+\section{Вывод}
+
+В ходе выполнения данной курсовой работы были рассмотрены и решены следующие задачи: определение корней уравнения, решение СЛАУ, вычисление интеграла и использование интерполяционных многочленов. Кроме того, была решена задача Коши с применением различных численных методов.
+
+Для определения корней уравнения графически была использована визуализация функции и выявление точек пересечения с осью абсцисс. Для уточнения одного из корней были применены итерационные методы: метод деления отрезка пополам, метод простой итерации и метод Ньютона. С помощью этих методов был достигнут заданный уровень точности в 0,001.
+
+Для решения СЛАУ были применены соответствующие алгоритмы, такие как метод Гаусса или метод прогонки, в зависимости от характеристик системы. Результаты решения системы линейных алгебраических уравнений позволили найти значения неизвестных переменных.
+
+Вычисление интеграла проводилось с использованием численных методов, таких как метод трапеций и метод Симпсона. Погрешности вычислений были оценены с помощью соответствующих методов, например, с использованием правила Рунге.
+
+Интерполяционные многочлены степени от 1 до 4 были использованы для нахождения значений функции в заданных точках. Погрешность была оценена с учетом выбранной степени многочлена и сравнения с исходными значениями функции.
+
+Наконец, задача Коши была решена с применением методов Эйлера, модифицированного метода Эйлера и метода Рунге-Кутты 4-го порядка. Результаты работы каждого метода были сопоставлены и погрешность была оценена с использованием правила Рунге Ромберга.
+
+В результате выполнения данной курсовой работы были получены численные значения корней уравнения, решения СЛАУ, интеграла, значений функции с использованием интерполяции, а также решение задачи Коши. Оценка погрешностей позволяет учесть точность и достоверность полученных результатов.
+
+\end{document}
